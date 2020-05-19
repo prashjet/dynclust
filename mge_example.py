@@ -1,10 +1,23 @@
 import numpy as np
-from mge import mge_fit_1d      # i.e. capellari's MGE code
 import matplotlib.pyplot as plt
 from scipy import stats
 
 from astropy import units as u
+
+# improrting the next module directly won't work!
+# needs requirements I have locally and don't have time to put online yet
+# if you just want to run this script then you'll only need to import
+#     dc.mges.MGEDiscrete1D
+# so I recommend commenting everything else out of the __init__ and the source
 import dynclust_src as dc
+
+# this is capellari's MGE code
+# import from wherwever you have it installed
+from mge import mge_fit_1d
+
+# We do an MGE fit twice:
+# 1) once using Capellari's code (binned profile, maximum likelihood)
+# 2) once using my MGEDiscrete1D class (discrete fit, posterior samples)
 
 # generate some fake 2D data
 n1 = 100
@@ -36,6 +49,7 @@ area_ring = area[1:] - area[0:-1]
 rho = h/area_ring
 c = np.sqrt(e[0:-1] * e[1:])
 p = mge_fit_1d.mge_fit_1d(c, rho, ngauss=10)
+# takes posterior samples but we only plot the maximum a posteriori solution 
 p.plot()
 
 # fit with my code
